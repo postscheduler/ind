@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Buttons</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background-color: #f4f4f4;
+            position: relative;
+            overflow: hidden;
+        }
+        .button {
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 50%;
+            position: absolute;
+            cursor: pointer;
+        }
+        .red { background-color: red; }
+        .blue { background-color: blue; }
+        .green { background-color: green; }
+        .yellow { background-color: yellow; }
+        .orange { background-color: orange; }
+        .purple { background-color: purple; }
+        .pink { background-color: pink; }
+        .brown { background-color: brown; }
+        .cyan { background-color: cyan; }
+        .lime { background-color: lime; }
+        .black { background-color: black; }
+        .grey { background-color: grey; }
+        .teal { background-color: teal; }
+        .magenta { background-color: magenta; }
+        .gold { background-color: gold; }
+        .silver { background-color: silver; }
+        .navy { background-color: navy; }
+        .maroon { background-color: maroon; }
+        .olive { background-color: olive; }
+        .violet { background-color: violet; }
+        .indigo { background-color: indigo; }
+        .coral { background-color: coral; }
+        .salmon { background-color: salmon; }
+        .plum { background-color: plum; }
+        .khaki { background-color: khaki; }
+        .lavender { background-color: lavender; }
+        .crimson { background-color: crimson; }
+        .aqua { background-color: aqua; }
+        .chocolate { background-color: chocolate; }
+        .beige { background-color: beige; }
+        .tan { background-color: tan; }
+        .goldenrod { background-color: goldenrod; }
+        .orchid { background-color: orchid; }
+        .azure { background-color: azure; }
+        .peach { background-color: peachpuff; }
+        .mint { background-color: mintcream; }
+        .sand { background-color: sandybrown; }
+        .steel { background-color: steelblue; }
+        .lavenderblush { background-color: lavenderblush; }
+        .darkgreen { background-color: darkgreen; }
+        .lightpink { background-color: lightpink; }
+        .forest { background-color: forestgreen; }
+        .firebrick { background-color: firebrick; }
+        .peru { background-color: peru; }
+        .snow { background-color: snow; }
+        .midnight { background-color: midnightblue; }
+        .honeydew { background-color: honeydew; }
+        .ivory { background-color: ivory; }
+        .hotpink { background-color: hotpink; }
+        .papaya { background-color: papayawhip; }
+        .seashell { background-color: seashell; }
+        .powder { background-color: powderblue; }
+        .aliceblue { background-color: aliceblue; }
+        .thistle { background-color: thistle; }
+        .linen { background-color: linen; }
+        .oldlace { background-color: oldlace; }
+        .bisque { background-color: bisque; }
+        .seagreen { background-color: seagreen; }
+        .tomato { background-color: tomato; }
+        .springgreen { background-color: springgreen; }
+
+        /* Fullscreen overlay for animation */
+        .overlay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background-color: transparent;
+            border-radius: 50%;
+            z-index: 999;
+            opacity: 0.8;
+            animation: expand-fade 3s forwards;
+        }
+
+        /* Keyframes for expand-fade effect */
+        @keyframes expand-fade {
+            0% {
+                width: 0;
+                height: 0;
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+            50% {
+                width: 100vw;
+                height: 100vw;
+                opacity: 0.7;
+            }
+            100% {
+                width: 150vw;
+                height: 150vw;
+                opacity: 0;
+            }
+        }
+    </style>
+    <script>
+
+        // Function to randomly position buttons on the page without overlapping
+        function randomizeButtonPositions() {
+            const buttons = document.querySelectorAll('.button');
+            const placedPositions = [];
+            const buttonSize = 50;
+
+            buttons.forEach(button => {
+                let x, y, isOverlapping;
+
+                do {
+                    x = Math.random() * (window.innerWidth - buttonSize);
+                    y = Math.random() * (window.innerHeight - buttonSize);
+
+                    // Check for overlaps
+                    isOverlapping = placedPositions.some(pos => {
+                        return Math.abs(pos.x - x) < buttonSize && Math.abs(pos.y - y) < buttonSize;
+                    });
+                } while (isOverlapping);
+
+                placedPositions.push({ x, y });
+                button.style.left = `${x}px`;
+                button.style.top = `${y}px`;
+            });
+        }
+
+        // Function to show animation overlay
+        function showAnimation(color) {
+            const overlay = document.createElement('div');
+            overlay.className = 'overlay';
+            overlay.style.backgroundColor = color;
+            document.body.appendChild(overlay);
+
+            // Start the animation and remove overlay after 3 seconds
+            setTimeout(() => {
+                overlay.remove();
+            }, 2000);
+        }
+
+        // Attach event listeners to buttons
+        window.onload = () => {
+            randomizeButtonPositions();
+            const buttons = document.querySelectorAll('.button');
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    if (!button.classList.contains('blue')) {
+                        const color = window.getComputedStyle(button).backgroundColor;
+                        showAnimation(color);
+                    }
+                });
+            });
+        };
+
+        // Reposition buttons on window resize
+        window.onresize = randomizeButtonPositions;
+    </script>
+</head>
+<body>
+    <!-- 62 Buttons -->
+    <button class="button red"></button>
+    <button class="button blue" onclick="window.location.href='index2.html'"></button>
+    <button class="button green"></button>
+    <button class="button yellow"></button>
+    <button class="button orange"></button>
+    <button class="button purple"></button>
+    <button class="button pink"></button>
+    <button class="button brown"></button>
+    <button class="button cyan"></button>
+    <button class="button lime"></button>
+    <button class="button black" onclick="window.location.href = 'https://drive.google.com/drive/folders/1NOeXoXfTTJRGy84VmI0JWzoHcqsRjbpT?usp=sharing'"></button>
+    <button class="button grey"></button>
+    <button class="button teal"></button>
+    <button class="button magenta"></button>
+    <button class="button gold"></button>
+    <button class="button silver"></button>
+    <button class="button navy"></button>
+    <button class="button maroon"></button>
+    <button class="button olive"></button>
+    <button class="button violet"></button>
+    <button class="button indigo"></button>
+    <button class="button coral"></button>
+    <button class="button salmon"></button>
+    <button class="button plum"></button>
+    <button class="button khaki"></button>
+    <button class="button lavender"></button>
+    <button class="button crimson"></button>
+    <button class="button aqua"></button>
+    <button class="button chocolate"></button>
+    <button class="button beige"></button>
+    <button class="button tan"></button>
+    <button class="button goldenrod"></button>
+    <button class="button orchid"></button>
+    <button class="button azure"></button>
+    <button class="button peach"></button>
+    <button class="button mint"></button>
+    <button class="button sand"></button>
+    <button class="button steel"></button>
+    <button class="button lavenderblush"></button>
+    <button class="button darkgreen"></button>
+    <button class="button lightpink"></button>
+    <button class="button forest"></button>
+    <button class="button firebrick"></button>
+    <button class="button peru"></button>
+    <button class="button snow"></button>
+    <button class="button midnight"></button>
+    <button class="button honeydew"></button>
+    <button class="button ivory"></button>
+    <button class="button hotpink"></button>
+    <button class="button papaya"></button>
+    <button class="button seashell"></button>
+    <button class="button powder"></button>
+    <button class="button aliceblue"></button>
+    <button class="button thistle"></button>
+    <button class="button linen"></button>
+    <button class="button oldlace"></button>
+    <button class="button bisque"></button>
+    <button class="button seagreen"></button>
+    <button class="button tomato"></button>
+    <button class="button springgreen"></button>
+</body>
+</html>  make background dark

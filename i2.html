@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    button {
+      background-color: #201f1f;
+      color: white;
+      padding: 10px 20px;
+      margin: 5px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #666;
+    }
+  </style>
+</head>
+<body>
+
+
+<button onclick="copyCode('DES')">DES</button>
+<button onclick="copyCode('DH')">DH</button>
+<button onclick="copyCode('RFC')">RFC</button>
+<button onclick="copyCode('RFR')">RFR</button>
+<button onclick="copyCode('SHA')">SHA</button>
+
+<script>
+const codeSnippets = {
+  DES: `// DES.java
+package crc;
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import java.util.Base64;
+public class DES {
+    public static SecretKey generateKey() throws Exception {
+        KeyGenerator keyGen = KeyGenerator.getInstance("DES");
+        keyGen.init(56);
+        return keyGen.generateKey();
+    }
+    public static String encrypt(String plainText, SecretKey key) throws Exception {
+        Cipher cipher = Cipher.getInstance("DES");
+        cipher.init(Cipher.ENCRYPT_MODE, key);
+        byte[] encryptedBytes = cipher.doFinal(plainText.getBytes());
+        return Base64.getEncoder().encodeToString(encryptedBytes);
+    }
+    public static String decrypt(String cipherText, SecretKey key) throws Exception {
+        Cipher cipher = Cipher.getInstance("DES");
+        cipher.init(Cipher.DECRYPT_MODE, key);
+        byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(cipherText));
+        return new String(decryptedBytes);
+    }
+    public static void main(String[] args) {
+        try {
+            SecretKey key = generateKey();
+            String text = "HELLODES";
+            String encryptedText = encrypt(text, key);
+            String decryptedText = decrypt(encryptedText, key);
+            System.out.println("Plaintext: " + text);
+            System.out.println("Ciphertext: " + encryptedText);
+            System.out.println("Decrypted Text: " + decryptedText);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}`,
+
+  DH: `// Diffie_Hellman.java
+package crc;
+import java.math.BigInteger;
+import java.security.SecureRandom;
+import java.util.Scanner;
+class Diffie_Hellman {
+    private static final int BIT_LENGTH = 512;
+    private static final SecureRandom random = new SecureRandom();
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the value of p:");
+        BigInteger p = sc.nextBigInteger();
+        System.out.println("Enter the value of g:");
+        BigInteger g = sc.nextBigInteger();
+        BigInteger a = new BigInteger(BIT_LENGTH, random);
+        BigInteger A = g.modPow(a, p);
+        BigInteger b = new BigInteger(BIT_LENGTH, random);
+        BigInteger B = g.modPow(b, p);
+        BigInteger aliceSharedKey = B.modPow(a, p);
+        BigInteger bobSharedKey = A.modPow(b, p);
+        System.out.println("Public Prime (p): " + p);
+        System.out.println("Public Base (g): " + g);
+        System.out.println("Alice's Private Key: " + a);
+        System.out.println("Alice's Public Key (A): " + A);
+        System.out.println("Bob's Private Key: " + b);
+        System.out.println("Bob's Public Key (B): " + B);
+        System.out.println("Alice's Computed Shared Key: " + aliceSharedKey);
+        System.out.println("Bob's Computed Shared Key: " + bobSharedKey);
+        System.out.println("Shared Key Match: " + aliceSharedKey.equals(bobSharedKey));
+    }
+}`,
+
+  RFC: `import java.util.Scanner;
+
+public class ColumnMajorRailFenceCipher {
+
+    // Encrypt the message using column-major Rail Fence cipher
+    public static String encrypt(String plaintext, int columns) {
+        plaintext = plaintext.replaceAll("\\s+", "").toUpperCase();  // remove spaces, convert to uppercase
+        int length = plaintext.length();
+        int rows = (int) Math.ceil((double) length / columns);
+        int paddedLength = rows * columns;
+
+        // Pad with 'X' if necessary
+        StringBuilder padded = new StringBuilder(plaintext);
+        while (padded.length() < paddedLength) {
+            padded.append('X');
+        }
+
+        char[][] grid = new char[rows][columns];
+
+        // Fill the grid column by column (top to bottom)
+        int index = 0;
+        for (int col = 0; col < columns; col++) {
+            for (int row = 0; row < rows; row++) {
+                grid[row][col] = padded.charAt(index++);
+            }
+        }
+
+        // Read the grid row by row (left to right)
+        StringBuilder ciphertext = new StringBuilder();
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < columns; col++) {
+                ciphertext.append(grid[row][col]);
+            }
+        }
+
+        return ciphertext.toString();
+    }
+
+    // Decrypt the message
+    public static String decrypt(String ciphertext, int columns) {
+        int length = ciphertext.length();
+        int rows = (int) Math.ceil((double) length / columns);
+
+        char[][] grid = new char[rows][columns];
+
+        // Fill the grid row by row (left to right)
+        int index = 0;
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < columns; col++) {
+                grid[row][col] = ciphertext.charAt(index++);
+            }
+        }
+
+        // Read column by column to get original message
+        StringBuilder plaintext = new StringBuilder();
+        for (int col = 0; col < columns; col++) {
+            for (int row = 0; row < rows; row++) {
+                plaintext.append(grid[row][col]);
+            }
+        }
+
+        // Remove trailing Xs used for padding
+        return plaintext.toString().replaceAll("X+$", "");
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Get input from user
+        System.out.print("Enter the plaintext message: ");
+        String message = scanner.nextLine();
+
+        System.out.print("Enter the number of columns: ");
+        int columns = scanner.nextInt();
+
+        // Encrypt and Decrypt
+        String encrypted = encrypt(message, columns);
+        String decrypted = decrypt(encrypted, columns);
+
+        // Print results
+        System.out.println("\nEncrypted Message: " + encrypted);
+        System.out.println("Decrypted Message: " + decrypted);
+    }
+}
+`,
+
+  RFR: `// RailFenceCipher.java
+package crc;
+class RailFenceCipher {
+    public static String encrypt(String text, int depth) {
+        char[][] rail = new char[depth][text.length()];
+        int row = 0, direction = 1;
+        for (int i = 0; i < text.length(); i++) {
+            rail[row][i] = text.charAt(i);
+            row += direction;
+            if (row == 0 || row == depth - 1) direction *= -1;
+        }
+        StringBuilder cipherText = new StringBuilder();
+        for (char[] chars : rail)
+            for (char ch : chars)
+                if (ch != 0) cipherText.append(ch);
+        return cipherText.toString();
+    }
+    public static String decrypt(String cipherText, int depth) {
+        char[][] rail = new char[depth][cipherText.length()];
+        int row = 0, direction = 1;
+        for (int i = 0; i < cipherText.length(); i++) {
+            rail[row][i] = '*';
+            row += direction;
+            if (row == 0 || row == depth - 1) direction *= -1;
+        }
+        int index = 0;
+        for (int i = 0; i < depth; i++)
+            for (int j = 0; j < cipherText.length(); j++)
+                if (rail[i][j] == '*' && index < cipherText.length())
+                    rail[i][j] = cipherText.charAt(index++);
+        StringBuilder plainText = new StringBuilder();
+        row = 0;
+        direction = 1;
+        for (int i = 0; i < cipherText.length(); i++) {
+            plainText.append(rail[row][i]);
+            row += direction;
+            if (row == 0 || row == depth - 1) direction *= -1;
+        }
+        return plainText.toString();
+    }
+    public static void main(String[] args) {
+        String text = "HELLO RAIL FENCE".replace(" ", "");
+        int depth = 3;
+        String cipherText = encrypt(text, depth);
+        String decryptedText = decrypt(cipherText, depth);
+        System.out.println("Plaintext: " + text);
+        System.out.println("Ciphertext: " + cipherText);
+        System.out.println("Decrypted Text: " + decryptedText);
+    }
+}`,
+
+  SHA:`package crc;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Scanner;
+
+public class SHAHashWithDigest {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Step 1: Get user input
+        System.out.print("Enter the plaintext message: ");
+        String input = scanner.nextLine();
+
+        // Step 2: Ask user for SHA variant
+        System.out.print("Choose SHA variant (SHA-1, SHA-256, SHA-512): ");
+        String algorithm = scanner.nextLine().toUpperCase();
+
+        try {
+            // Step 3: Create MessageDigest instance for chosen SHA variant
+            MessageDigest md = MessageDigest.getInstance(algorithm);
+
+            // Step 4: Convert message to bytes and compute hash
+            byte[] hashBytes = md.digest(input.getBytes());
+
+            // Step 5: Convert hash bytes to hexadecimal format
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hashBytes) {
+                hexString.append(String.format("%02x", b));
+            }
+
+            // Step 6: Display output
+            System.out.println("\nHash (" + algorithm + ") value:");
+            System.out.println(hexString.toString());
+
+            // Explanation
+            System.out.println("\nExplanation:");
+            System.out.println("- SHA is used for data integrity and security.");
+            System.out.println("- It generates a fixed-length hash for any input.");
+            System.out.println("- MessageDigest in Java handles all the internal steps: padding, block processing, and hashing.");
+        } catch (NoSuchAlgorithmException e) {
+            System.out.println("Invalid SHA variant specified. Please use SHA-1, SHA-256, or SHA-512.");
+        }
+    }
+} `
+};
+
+function copyCode(algorithm) {
+  const code = codeSnippets[algorithm];
+  if (!code) {
+    alert("Code not found for " + algorithm);
+    return;
+  }
+
+//   navigator.clipboard.writeText(code)
+    // .then(() => alert(`${algorithm} code copied to clipboard!`))
+    // .catch(err => alert("Failed to copy: " + err));
+}
+</script>
+
+</body>
+</html>
