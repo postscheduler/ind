@@ -297,9 +297,9 @@ function copyCode(algorithm) {
     return;
   }
 
-//   navigator.clipboard.writeText(code)
-    // .then(() => alert(`${algorithm} code copied to clipboard!`))
-    // .catch(err => alert("Failed to copy: " + err));
+   navigator.clipboard.writeText(code)
+     .then(() => alert(`${algorithm} code copied to clipboard!`))
+     .catch(err => alert("Failed to copy: " + err));
 }
 </script>
 
